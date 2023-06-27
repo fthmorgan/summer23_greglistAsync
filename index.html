@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" href="https://bcw.blob.core.windows.net/public/img/9977764104160066">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.0.96/css/materialdesignicons.min.css"
+    integrity="sha512-fXnjLwoVZ01NUqS/7G5kAnhXNXat6v7e3M9PhoMHOTARUMCaf5qNO84r5x9AFf5HDzm3rEZD8sb/n6dZ19SzFA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="assets/style/main.css">
+  <link rel="stylesheet" href="assets/style/style.css">
+  <title>gregslistAsync</title>
+</head>
+
+<body>
+  <!-- SECTION -->
+  <header>
+    <nav class="navbar navbar-dark navbar-expand bg-dark text-light px-2">
+      <a class="navbar-brand" href="#">
+        <img src="https://codeworks.blob.core.windows.net/public/assets/img/cw-mark.png" height="45" alt=""
+          loading="lazy">
+        <span class="ml-2">gregslistAsync</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <!-- NAVLINKS -->
+          <a href="#/about" class="nav-link">About</a>
+          <a href="#/cars" class="nav-link">Cars</a>
+        </div>
+      </div>
+      <div class="flex-grow-1 justify-content-end align-items-center d-flex" id="authstate"></div>
+    </nav>
+  </header>
+
+  <!-- SECTION -->
+  <main>
+
+    <section id="router-view">
+      <!-- primary viewport -->
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 p-4 d-flex">
+            <h1>Cars</h1>
+            <button id="carFormButton" class="btn btn-primary ms-3 d-none" type="button" data-bs-toggle="collapse"
+              data-bs-target="#carCollapse" aria-expanded="false" aria-controls="collapseExample">
+              Car Form
+            </button>
+          </div>
+        </div>
+        <section class="row">
+          <div class="col-10 m-auto">
+            <div class="collapse" id="carCollapse">
+              <div class="card card-body">
+                <form onsubmit="app.CarsController.createCar(event)">
+
+                  <div>
+                    <label for="carMake">Make</label>
+                    <input type="text" id="carMake" minlength="3" maxlength="30" required name="make">
+                  </div>
+
+                  <div>
+                    <label for="carModel">Model</label>
+                    <input type="text" id="carModel" minlength="3" maxlength="40" required name="model">
+                  </div>
+
+                  <div>
+                    <label for="carYear">Year</label>
+                    <!-- <input type="range" id="carYear" name="year" min="1970" max="2024"> -->
+                    <input id="carYear" type="number" min="1970" max="2024" required name="year">
+                  </div>
+
+                  <div>
+                    <label for="carImg">Image URL</label>
+                    <input type="url" id="carImg" maxlength="300" required name="imgUrl">
+                  </div>
+
+                  <div>
+                    <label for="carPrice">Price</label>
+                    <input class="w-100" type="range" id="carPrice" name="price" min="1" max="100000">
+                  </div>
+
+                  <div>
+                    <label for="carDescription">Description</label>
+                    <textarea id="carDescription" name="description" rows="10" class="w-50">
+                  </textarea>
+                  </div>
+
+                  <div>
+                    <label for="carColor">Color</label>
+                    <input type="color" id="carColor" name="color" value="#e66465" required>
+                  </div>
+
+                  <button type="submit">Submit</button>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="row" id="whipsList">
+
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <!-- SECTION -->
+  <footer class="bg-dark text-light">
+    <div class="text-center no-select">
+      <p class="mb-0"><small>Made with 💖 by CodeWorks</small></p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/1.22/auth0-spa-js.production.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/jakeoverall/auth0provider-client/browser/Auth0Provider.js"></script>
+  <script src="https://cdn.socket.io/4.1.1/socket.io.min.js"
+    integrity="sha384-cdrFIqe3RasCMNE0jeFG9xJHog/tgOVC1E9Lzve8LQN1g5WUHo0Kvk1mawWjxX7a"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.10/dist/sweetalert2.all.min.js"
+    integrity="sha256-hw7v8jZF/rFEdx1ZHepT4D73AFTHLu/P9kEyrNesRyc=" crossorigin="anonymous"></script>
+
+  <script src="app/App.js" type="module"></script>
+</body>
+
+</html>
