@@ -4,6 +4,7 @@ import { api } from "./AxiosService.js"
 
 class CarsService {
 
+
   async getCars() {
     const res = await api.get('api/cars')
     console.log('got cars', res.data);
@@ -39,6 +40,24 @@ class CarsService {
     }
 
     AppState.cars.splice(carIndex, 1)
+
+    AppState.emit('cars')
+  }
+
+  async editCar(carData, carId) {
+    const res = await api.put(`api/cars/${carId}`, carData)
+
+    console.log('edited car', res.data);
+
+    const updatedCar = new Car(res.data)
+
+    const oldCarIndex = AppState.cars.findIndex(car => car.id == carId)
+
+    if (oldCarIndex == -1) {
+      throw new Error(`No car index found with the id of ${carId}`)
+    }
+
+    AppState.cars.splice(oldCarIndex, 1, updatedCar)
 
     AppState.emit('cars')
   }

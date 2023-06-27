@@ -1,4 +1,5 @@
 import { AppState } from "../AppState.js";
+import { Car } from "../models/Car.js";
 import { carsService } from "../services/CarsService.js";
 import { getFormData } from "../utils/FormHandler.js";
 import { Pop } from "../utils/Pop.js";
@@ -27,14 +28,33 @@ export class CarsController {
   constructor () {
     console.log('cars controller loaded');
     this.getCars()
+    this.drawCarForm()
 
     AppState.on('cars', _drawCars)
+    AppState.on('cars', this.drawCarForm)
     AppState.on('account', _drawCars)
     AppState.on('account', _showFormButton)
   }
 
+  drawEditForm(carId) {
+    const foundCar = AppState.cars.find(car => car.id == carId)
+
+    const carForm = document.getElementById('car-form')
+
+
+    setHTML('car-form', foundCar.EditForm)
+
+    // @ts-ignore
+    bootstrap.Collapse.getOrCreateInstance('#carCollapse').show()
+
+    carForm.scrollIntoView()
+  }
+
+  drawCarForm() {
+    setHTML('car-form', Car.CreateForm)
+  }
+
   // TODO CRUD ROUTES
-  // REVIEW UPDATE
 
   // REVIEW READ / GET
   async getCars() {
@@ -58,6 +78,12 @@ export class CarsController {
       console.log('car data!', carData);
 
       await carsService.createCar(carData)
+
+      form.reset()
+
+      // @ts-ignore
+      bootstrap.Collapse.getOrCreateInstance('#carCollapse').hide()
+
     } catch (error) {
       console.error(error);
       Pop.error(error.message)
@@ -75,6 +101,29 @@ export class CarsController {
 
 
       await carsService.deleteCar(carId)
+    } catch (error) {
+      console.error(error);
+      Pop.error(error.message)
+    }
+  }
+
+  // REVIEW UPDATE
+  async editCar(event, carId) {
+    try {
+      event.preventDefault()
+
+      const form = event.target
+
+      const carData = getFormData(form)
+
+      console.log('car data!', carData);
+      console.log('car id!', carId);
+
+      await carsService.editCar(carData, carId)
+
+      // @ts-ignore
+      bootstrap.Collapse.getOrCreateInstance('#carCollapse').hide()
+
     } catch (error) {
       console.error(error);
       Pop.error(error.message)

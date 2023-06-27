@@ -31,13 +31,14 @@ export class Car {
             <h3>$${this.price}</h3>
             <p>${this.description}</p>
             <h4>${this.createdAt.toLocaleString()}</h4>
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center mb-3">
               <h5 class="me-3">${this.creator.name}</h5>
               <img class="img-fluid creator-picture"
                 src="${this.creator.picture}"
                 alt="${this.creator.name}">
             </div>
             ${this.ComputeDeleteButton}
+            ${this.ComputeEditButton}
         </div>
       </section>
     </div>
@@ -49,6 +50,108 @@ export class Car {
       return ''
     }
     return `<button onclick="app.CarsController.deleteCar('${this.id}')" class="btn btn-danger">Delete Car</button>`
+  }
+  get ComputeEditButton() {
+    if (!AppState.account || AppState.account.id != this.creatorId) {
+      return ''
+    }
+    return `<button onclick="app.CarsController.drawEditForm('${this.id}')" class="btn ms-3 btn-info">Edit Car</button>`
+  }
+
+  get EditForm() {
+    return `
+    <div class="card card-body">
+      <form onsubmit="app.CarsController.editCar(event, '${this.id}')">
+
+        <div>
+          <label for="carMake">Make</label>
+          <input type="text" id="carMake" minlength="3" maxlength="30" required name="make" value="${this.make}">
+        </div>
+
+        <div>
+          <label for="carModel">Model</label>
+          <input type="text" id="carModel" minlength="3" maxlength="40" required name="model" value="${this.model}">
+        </div>
+
+        <div>
+          <label for="carYear">Year</label>
+          <!-- <input type="range" id="carYear" name="year" min="1970" max="2024"> -->
+          <input id="carYear" type="number" min="1970" max="2024" required name="year" value="${this.year}">
+        </div>
+
+        <div>
+          <label for="carImg">Image URL</label>
+          <input type="url" id="carImg" maxlength="300" required name="imgUrl" value="${this.imgUrl}">
+        </div>
+
+        <div>
+          <label for="carPrice">Price</label>
+          <input class="w-100" type="range" id="carPrice" name="price" min="1" max="100000" value="${this.price}">
+        </div>
+
+        <div>
+          <label for="carDescription">Description</label>
+          <textarea id="carDescription" name="description" rows="10" class="w-50">
+          ${this.description}
+        </textarea>
+        </div>
+
+        <div>
+          <label for="carColor">Color</label>
+          <input type="color" id="carColor" name="color" required value="${this.color}">
+        </div>
+
+        <button type="submit">Edit Car</button>
+      </form>
+
+    </div>
+    `
+  }
+
+  static get CreateForm() {
+    return `
+    <form onsubmit="app.CarsController.createCar(event)">
+
+        <div>
+          <label for="carMake">Make</label>
+          <input type="text" id="carMake" minlength="3" maxlength="30" required name="make">
+        </div>
+
+        <div>
+          <label for="carModel">Model</label>
+          <input type="text" id="carModel" minlength="3" maxlength="40" required name="model">
+        </div>
+
+        <div>
+          <label for="carYear">Year</label>
+          <!-- <input type="range" id="carYear" name="year" min="1970" max="2024"> -->
+          <input id="carYear" type="number" min="1970" max="2024" required name="year">
+        </div>
+
+        <div>
+          <label for="carImg">Image URL</label>
+          <input type="url" id="carImg" maxlength="300" required name="imgUrl">
+        </div>
+
+        <div>
+          <label for="carPrice">Price</label>
+          <input class="w-100" type="range" id="carPrice" name="price" min="1" max="100000" value="10000">
+        </div>
+
+        <div>
+          <label for="carDescription">Description</label>
+          <textarea id="carDescription" name="description" rows="10" class="w-50">
+        </textarea>
+        </div>
+
+        <div>
+          <label for="carColor">Color</label>
+          <input type="color" id="carColor" name="color" value="#e66465" required>
+        </div>
+
+        <button type="submit">Submit</button>
+      </form>
+    `
   }
 
 }
